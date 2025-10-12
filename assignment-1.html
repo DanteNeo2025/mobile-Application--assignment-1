@@ -70,7 +70,7 @@
       </ion-content>
     </ion-app>
   </body>
-  
+
   <script>
   // 初始化資料
    const items = [
@@ -277,14 +277,60 @@
   }
 ]
 
-  // 更新清單顯示
+// 更新清單顯示
    function updateList() {
-     const list = document.querySelector('ion-list')
-     const template = document.querySelector('.list-item')
-     list.textContent = ''
-
-  // 根據搜尋和過濾條件更新清單
-  // ...
+    const list = document.querySelector('ion-list');
+    list.innerHTML = '';
+    items.forEach(item => {
+      const ionItem = document.createElement('ion-item');
+      ionItem.innerHTML = `
+        <ion-thumbnail slot="start">
+          <ion-img src="${item.imageUrl}" alt="${item.title}"></ion-img>
+        </ion-thumbnail>
+        <div class="item-content">
+          <div class="item-title">${item.title}</div>
+          <div class="item-subtitle">${item.language}｜${item.level}</div>
+          <div class="item-details">${item.details}</div>
+          <div class="tag-container">
+            <ion-chip color="primary" size="small">${item.category}</ion-chip>
+            ${item.tags.map(tag => `<ion-chip size="small" color="secondary">${tag}</ion-chip>`).join('')}
+          </div>
+          <div style="margin-top:0.5rem;">
+          <video src="${item.videoUrl}" controls width="200" style="max-width:100%;border-radius:8px;"></video>
+          </div>
+        </div>
+    `;
+    list.appendChild(ionItem);
+    });
    }
+   updateList();
+
+   const searchbar = document.querySelector('ion-searchbar')
+   searchbar.addEventListener('ionInput', event => {
+     // 實作搜尋邏輯
+     const searchTerm = event.target.value.toLowerCase();
+     items.forEach(item => {
+       const itemTitle = item.title.toLowerCase();
+       const itemTags = item.tags.map(tag => tag.toLowerCase());
+       if (itemTitle.includes(searchTerm) || itemTags.some(tag => tag.includes(searchTerm))) {
+         item.element.style.display = 'block';
+       } else {
+         item.element.style.display = 'none';
+       }
+     });
+   })
+
+   const categorySelect = document.querySelector('ion-select')
+   categorySelect.addEventListener('ionChange', event => {
+     // 實作分類過濾邏輯
+     const selectedCategory = event.target.value;
+     items.forEach(item => {
+       if (item.category === selectedCategory || selectedCategory === '全部') {
+         item.element.style.display = 'block';
+       } else {
+         item.element.style.display = 'none';
+       }
+     });
+   })
   </script>
 </html>
