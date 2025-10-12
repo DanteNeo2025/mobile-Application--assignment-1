@@ -70,4 +70,30 @@
       </ion-content>
     </ion-app>
   </body>
+  <script>
+  // 初始化資料
+   const items = [
+  {
+    title: 'Python 基礎入門', // 主標題
+    language: 'Python 3', // 程式語言
+    level: '入門', // 程度
+    details:
+      '從零開始學習 Python 程式設計，包含變數、流程控制、函式等基礎概念。', // 重點
+    category: '程式入門', // 分類
+    tags: ['Python', '程式設計', '入門課程'], // 標籤陣列
+    imageUrl: 'images/python-basics.jpg', // 課程封面圖
+    videoUrl: 'videos/python-intro.mp4', // 教學影片（本地檔案或 YouTube ID）
+  },
+  // ... 更多課程資料
+]
+  // 更新清單顯示
+   function updateList() {
+     const list = document.querySelector('ion-list')
+     const template = document.querySelector('.list-item')
+     list.textContent = ''
+
+  // 根據搜尋和過濾條件更新清單
+  // ...
+   }
+  </script>
 </html>
