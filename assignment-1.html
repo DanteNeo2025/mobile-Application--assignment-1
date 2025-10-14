@@ -21,24 +21,98 @@
       ion-content {
         --padding-top: 0;
       }
+      .lang-header {
+        letter-spacing: 0.5px;
+        margin-top: 1.2em;
+        margin-bottom: 0.5em;
+        border-radius: 8px;
+        box-shadow: 0 1px 4px #0001;
+      }
+      .item-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+        justify-content: flex-start;
+      }
+      .item-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px #0001;
+        padding: 0.7em 0.7em 0.7em 0.7em;
+        flex: 1 1 0;
+        min-width: 320px;
+        max-width: 480px;
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        margin: 0;
+        height: 160px;
+        box-sizing: border-box;
+      }
       .item-content {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        gap: 1.2rem;
         width: 100%;
+        height: 100%;
+      }
+      .media-container {
         display: flex;
         flex-direction: column;
-        gap: 0.3rem;
+        align-items: flex-start;
+        gap: 0.7rem;
+        min-width: 140px;
+        max-width: 180px;
+        width: 180px;
+        height: 100%;
+        justify-content: center;
+      }
+      .media-img {
+        width: 140px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #eee;
+        background: #f8f8f8;
+      }
+      .media-video,
+      .media-iframe {
+        width: 140px;
+        height: 80px;
+        border-radius: 8px;
+        border: 1px solid #eee;
+        background: #000;
+      }
+      .item-info {
+        flex: 1 1 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-width: 0;
+        overflow: hidden;
       }
       .item-title {
         font-weight: bold;
         font-size: 1.1em;
         margin-bottom: 0.1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .item-subtitle {
         color: var(--ion-color-medium);
         font-size: 0.95em;
+        margin-bottom: 0.2em;
       }
       .item-details {
         font-size: 0.98em;
         color: #444;
+        margin-bottom: 0.2em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .tag-container {
         display: flex;
@@ -46,150 +120,54 @@
         gap: 0.4rem;
         margin-top: 0.2rem;
       }
-      .media-container {
-        margin-top: 0.5rem;
-        display: flex;
-        gap: 1.5rem;
-        align-items: flex-start;
-        flex-wrap: wrap;
-        width: 100%;
+      @media (max-width: 1100px) {
+        .item-row {
+          gap: 1rem;
+        }
+        .item-card {
+          min-width: 220px;
+          max-width: 1fr;
+          height: auto;
+        }
       }
-      .media-img {
-        width: 120px;
-        min-width: 90px;
-        height: 80px;
-        object-fit: cover;
-        border-radius: 8px;
-        border: 1px solid #eee;
-        flex-shrink: 0;
-        background: #f8f8f8;
-      }
-      .media-video {
-        flex: 1 1 220px;
-        max-width: 420px;
-        aspect-ratio: 16/9;
-        border-radius: 10px;
-        border: 1px solid #eee;
-        background: #000;
-        margin-left: 0;
-      }
-      .media-iframe {
-        flex: 1 1 220px;
-        max-width: 420px;
-        aspect-ratio: 16/9;
-        border-radius: 10px;
-        border: 1px solid #eee;
-        background: #000;
-        margin-left: 0;
-      }
-      @media (max-width: 600px) {
-        .media-container {
+      @media (max-width: 900px) {
+        .item-row {
           flex-direction: column;
-          align-items: stretch;
+          gap: 1.2rem;
+        }
+        .item-card {
+          min-width: 0;
+          max-width: 100%;
+          flex-direction: column;
+          height: auto;
+        }
+        .item-content {
+          flex-direction: column;
           gap: 0.7rem;
+          height: auto;
         }
-        .media-img {
-          width: 100%;
-          max-width: 100vw;
-          height: 120px;
-        }
-        .media-video,
-        .media-iframe {
+        .media-container {
+          flex-direction: row;
           width: 100%;
           max-width: 100vw;
           min-width: 0;
-          aspect-ratio: 16/9;
+          height: auto;
+          justify-content: flex-start;
         }
-      }
-      @media (min-width: 601px) and (max-width: 1024px) {
-        .media-container {
-          flex-direction: row;
-          align-items: flex-start;
-          gap: 1.2rem;
-        }
-        .media-img {
+        .media-img,
+        .media-video,
+        .media-iframe {
           width: 120px;
-          height: 90px;
-        }
-        .media-video,
-        .media-iframe {
-          max-width: 320px;
-          aspect-ratio: 16/9;
+          height: 80px;
         }
       }
-      @media (min-width: 1025px) {
-        .media-container {
-          flex-direction: row;
-          align-items: flex-start;
-          gap: 2rem;
-        }
-        .media-img {
-          width: 140px;
-          height: 100px;
-        }
-        .media-video,
-        .media-iframe {
-          max-width: 480px;
-          aspect-ratio: 16/9;
-        }
-      }
-      .lang-header {
-  letter-spacing: 0.5px;
-  margin-top: 1.2em;
-  margin-bottom: 0.5em;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px #0001;
-}
-
-.item-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-  justify-content: flex-start;
-}
-
-.item-card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px #0001;
-  padding: 1.1em 1em 1em 1em;
-  flex: 1 1 0;
-  min-width: 260px;
-  max-width: 340px;
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-}
-
-@media (max-width: 1100px) {
-  .item-row {
-    gap: 1rem;
-  }
-  .item-card {
-    min-width: 220px;
-    max-width: 1fr;
-  }
-}
-@media (max-width: 900px) {
-  .item-row {
-    flex-direction: column;
-    gap: 1.2rem;
-  }
-  .item-card {
-    min-width: 0;
-    max-width: 100%;
-  }
-}
     </style>
   </head>
   <body>
     <ion-app>
       <ion-header>
         <ion-toolbar>
-          <ion-title>
-            程式教學
-          </ion-title>
+          <ion-title> 程式教學 </ion-title>
         </ion-toolbar>
         <ion-searchbar placeholder="搜尋..."></ion-searchbar>
         <ion-item>
@@ -257,7 +235,8 @@
           tags: ["Android", "Kotlin", "App"],
           imageUrl:
             "https://images.weserv.nl/?url=i.ytimg.com/vi/6pJqYvge8TY/sddefault.jpg&w=800&h=800&fit=contain&output=jpg&q=85&il&n=-1",
-          videoUrl: "https://www.youtube.com/watch?v=6pJqYvge8TY&list=PLPh5-KovAYtFyX5elSTT9wEMt0HxMhR7L",
+          videoUrl:
+            "https://www.youtube.com/watch?v=6pJqYvge8TY&list=PLPh5-KovAYtFyX5elSTT9wEMt0HxMhR7L",
         },
         {
           title: "iOS App 開發",
@@ -290,7 +269,8 @@
           tags: ["Node.js", "API", "後端"],
           imageUrl:
             "https://images.weserv.nl/?url=i.ytimg.com/vi/Lx11PEXpkSU/sddefault.jpg&w=800&h=800&fit=contain&output=jpg&q=85&il&n=-1",
-          videoUrl: "https://www.youtube.com/watch?v=Lx11PEXpkSU&list=PL91gvBcdjUtZVtROM5MY-DTlk4pfnqbm_",
+          videoUrl:
+            "https://www.youtube.com/watch?v=Lx11PEXpkSU&list=PL91gvBcdjUtZVtROM5MY-DTlk4pfnqbm_",
         },
         {
           title: "Git 版本控制",
@@ -334,7 +314,8 @@
           tags: ["Java", "物件導向", "程式設計"],
           imageUrl:
             "https://images.weserv.nl/?url=i.ytimg.com/vi/evIGdOzKCYk/maxresdefault.jpg&w=800&h=800&fit=contain&output=jpg&q=85&il&n=-1",
-          videoUrl: "https://www.youtube.com/watch?v=evIGdOzKCYk&list=PLTb8yNz82VDW-Ka3DMZUvhf16zZCPFiGe",
+          videoUrl:
+            "https://www.youtube.com/watch?v=evIGdOzKCYk&list=PLTb8yNz82VDW-Ka3DMZUvhf16zZCPFiGe",
         },
         {
           title: "網頁設計基礎",
@@ -356,7 +337,8 @@
           tags: ["Vue.js", "前端", "框架"],
           imageUrl:
             "https://images.weserv.nl/?url=i.ytimg.com/vi/t7Px_M4SbRQ/maxresdefault.jpg&w=800&h=800&fit=contain&output=jpg&q=85&il&n=-1",
-          videoUrl: "https://www.youtube.com/watch?v=t7Px_M4SbRQ&list=PL-g0fdC5RMbq2EbkoiXF2vztGEcoDJoH5",
+          videoUrl:
+            "https://www.youtube.com/watch?v=t7Px_M4SbRQ&list=PL-g0fdC5RMbq2EbkoiXF2vztGEcoDJoH5",
         },
         {
           title: "Flutter 跨平台開發",
@@ -465,7 +447,7 @@
 
       function groupByLanguage(items) {
         const groups = {};
-        items.forEach(item => {
+        items.forEach((item) => {
           if (!groups[item.language]) groups[item.language] = [];
           groups[item.language].push(item);
         });
@@ -476,16 +458,16 @@
         // 可根據語言自訂顏色
         const map = {
           "Python 3": "#3572A5",
-          "JavaScript": "#E7E600",
-          "Kotlin": "#7F52FF",
-          "Swift": "#4BB900",
-          "SQL": "#CEEDF8",
-          "Linux": "#9AE7C5",
+          JavaScript: "#E7E600",
+          Kotlin: "#7F52FF",
+          Swift: "#4BB900",
+          SQL: "#CEEDF8",
+          Linux: "#9AE7C5",
           "C++": "#0B0C0E",
-          "Java": "#FFC801",
+          Java: "#FFC801",
           "HTML/CSS": "#E65802",
-          "Dart": "#220186",
-          "工具": "#888",
+          Dart: "#220186",
+          工具: "#888",
         };
         return map[lang] || "#666";
       }
@@ -499,7 +481,7 @@
           return;
         }
         const groups = groupByLanguage(filtered);
-        Object.keys(groups).forEach(lang => {
+        Object.keys(groups).forEach((lang) => {
           // 語言分組標題
           const header = document.createElement("div");
           header.className = "lang-header";
@@ -513,7 +495,7 @@
           header.textContent = lang;
           list.appendChild(header);
 
-          // 分組內容以 row 方式顯示，每排最多 3 個
+          // 分組內容以 row 方式顯示，每排最多 3 個，橫向設計
           const itemsArr = groups[lang];
           for (let i = 0; i < itemsArr.length; i += 3) {
             const row = document.createElement("div");
@@ -524,25 +506,35 @@
               const ytId = getYouTubeId(item.videoUrl);
               ionItem.innerHTML = `
                 <div class="item-content">
-                  <div class="item-title">${item.title}</div>
-                  <div class="item-subtitle">${item.language}｜${item.level}</div>
-                  <div class="item-details">${item.details}</div>
-                  <div class="tag-container">
-                    <ion-chip color="primary" size="small">${item.category}</ion-chip>
-                    ${item.tags
-                      .map(
-                        (tag) =>
-                          `<ion-chip size="small" color="secondary">${tag}</ion-chip>`
-                      )
-                      .join("")}
-                  </div>
                   <div class="media-container">
-                    <img class="media-img" src="${item.imageUrl}" alt="${item.title}" loading="lazy" />
+                    <img class="media-img" src="${item.imageUrl}" alt="${
+                item.title
+              }" loading="lazy" />
                     ${
                       ytId
                         ? `<iframe class="media-iframe" src="https://www.youtube.com/embed/${ytId}" frameborder="0" allowfullscreen title="YouTube影片"></iframe>`
                         : `<video class="media-video" src="${item.videoUrl}" controls></video>`
                     }
+                  </div>
+                  <div class="item-info">
+                    <div>
+                      <div class="item-title">${item.title}</div>
+                      <div class="item-subtitle">${item.language}｜${
+                item.level
+              }</div>
+                      <div class="item-details">${item.details}</div>
+                    </div>
+                    <div class="tag-container">
+                      <ion-chip color="primary" size="small">${
+                        item.category
+                      }</ion-chip>
+                      ${item.tags
+                        .map(
+                          (tag) =>
+                            `<ion-chip size="small" color="secondary">${tag}</ion-chip>`
+                        )
+                        .join("")}
+                    </div>
                   </div>
                 </div>
               `;
