@@ -109,6 +109,22 @@
         cursor: pointer;
         user-select: none;
       }
+      .favorite-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.3em;
+        color: #e6b800;
+        margin-left: 0.5em;
+        vertical-align: middle;
+        transition: color 0.2s;
+      }
+      .favorite-btn.favorited {
+        color: #ff9800;
+      }
+      .favorite-btn:focus {
+        outline: 2px solid #ff9800;
+      }
       /* 卡片動畫 */
       .fade-in {
         animation: fadeInCard 0.7s cubic-bezier(0.4, 2, 0.6, 1);
@@ -301,6 +317,25 @@
         overflow-wrap: break-word;
         word-break: break-all;
       }
+      /* 進階搜尋 */
+      .advanced-search {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin: 1rem 0 0.5rem 0;
+        align-items: center;
+      }
+      .advanced-search label {
+        font-size: 0.98em;
+        margin-right: 0.3em;
+      }
+      .advanced-search select,
+      .advanced-search input[type="text"] {
+        font-size: 1em;
+        padding: 0.2em 0.5em;
+        border-radius: 0.3em;
+        border: 1px solid #ccc;
+      }
       /* 切換動畫 */
       .page-fade-enter {
         animation: pageFadeIn 0.5s cubic-bezier(0.4, 2, 0.6, 1);
@@ -455,6 +490,30 @@
           <ion-select label="分類" interface="popover"></ion-select>
           <ion-chip color="tertiary" class="reset-chip">重設</ion-chip>
         </ion-item>
+        <div class="advanced-search" id="advancedSearch">
+          <label>
+            語言
+            <select id="advLang">
+              <option value="">全部</option>
+            </select>
+          </label>
+          <label>
+            等級
+            <select id="advLevel">
+              <option value="">全部</option>
+              <option value="入門">入門</option>
+              <option value="進階">進階</option>
+            </select>
+          </label>
+          <label>
+            標籤
+            <input type="text" id="advTag" placeholder="輸入標籤關鍵字" />
+          </label>
+          <label>
+            只顯示收藏
+            <input type="checkbox" id="advFav" />
+          </label>
+        </div>
       </ion-header>
       <ion-content>
         <div id="statChart" class="stat-chart"></div>
@@ -462,7 +521,7 @@
       </ion-content>
     </ion-app>
     <script>
-      // 資料初始化（20 筆，內容合理且有意義）
+      // ...items 陣列同前...
       const items = [
         {
           title: "Python 基礎入門",
@@ -690,17 +749,65 @@
           videoUrl: "https://www.youtube.com/watch?v=p4pqSTANWRo",
         },
       ];
-
       // 狀態
       let currentCategory = "";
       let currentSearch = "";
       let currentView = "list"; // "list" or "grid"
       let isLoading = false;
+      let advLang = "";
+      let advLevel = "";
+      let advTag = "";
+      let advFav = false;
+      let favorites = [];
+
+      // LocalStorage keys
+      const STORAGE_KEY = "progAppFilter";
+      const FAV_KEY = "progAppFavs";
+
+      // 初始化收藏
+      function loadFavorites() {
+        try {
+          favorites = JSON.parse(localStorage.getItem(FAV_KEY)) || [];
+        } catch {
+          favorites = [];
+        }
+      }
+      function saveFavorites() {
+        localStorage.setItem(FAV_KEY, JSON.stringify(favorites));
+      }
+
+      // 儲存/載入過濾設定
+      function saveFilter() {
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({
+            currentCategory,
+            currentSearch,
+            currentView,
+            advLang,
+            advLevel,
+            advTag,
+            advFav,
+          })
+        );
+      }
+      function loadFilter() {
+        try {
+          const obj = JSON.parse(localStorage.getItem(STORAGE_KEY));
+          if (!obj) return;
+          currentCategory = obj.currentCategory || "";
+          currentSearch = obj.currentSearch || "";
+          currentView = obj.currentView || "list";
+          advLang = obj.advLang || "";
+          advLevel = obj.advLevel || "";
+          advTag = obj.advTag || "";
+          advFav = !!obj.advFav;
+        } catch {}
+      }
 
       // 統計圖表
       function renderStatChart(filtered) {
         const chart = document.getElementById("statChart");
-        // 統計每個分類數量
         const stat = {};
         filtered.forEach((item) => {
           stat[item.category] = (stat[item.category] || 0) + 1;
@@ -746,22 +853,36 @@
 
       // 過濾資料
       function filterItems() {
-        return items.filter((item) => {
+        let result = items.filter((item) => {
           const categoryMatch =
             !currentCategory ||
             currentCategory === "" ||
             currentCategory === "全部" ||
             item.category === currentCategory;
           const search = currentSearch.trim().toLowerCase();
-          if (!search) return categoryMatch;
-          const inTitle = item.title.toLowerCase().includes(search);
-          const inTags = item.tags.some((tag) =>
-            tag.toLowerCase().includes(search)
-          );
-          const inDetails = item.details.toLowerCase().includes(search);
-          const inLang = item.language.toLowerCase().includes(search);
-          return categoryMatch && (inTitle || inTags || inDetails || inLang);
+          let searchMatch = true;
+          if (search) {
+            const inTitle = item.title.toLowerCase().includes(search);
+            const inTags = item.tags.some((tag) =>
+              tag.toLowerCase().includes(search)
+            );
+            const inDetails = item.details.toLowerCase().includes(search);
+            const inLang = item.language.toLowerCase().includes(search);
+            searchMatch = inTitle || inTags || inDetails || inLang;
+          }
+          return categoryMatch && searchMatch;
         });
+        // 進階搜尋
+        if (advLang) result = result.filter((i) => i.language === advLang);
+        if (advLevel) result = result.filter((i) => i.level === advLevel);
+        if (advTag)
+          result = result.filter((i) =>
+            i.tags.some((t) =>
+              t.toLowerCase().includes(advTag.trim().toLowerCase())
+            )
+          );
+        if (advFav) result = result.filter((i) => favorites.includes(i.title));
+        return result;
       }
 
       function getYouTubeId(url) {
@@ -837,10 +958,25 @@
           el.classList.add("fade-in");
           setTimeout(() => el.classList.remove("fade-in"), 800 + i * 30);
         });
+        // 收藏按鈕事件
+        document.querySelectorAll(".favorite-btn").forEach((btn) => {
+          btn.onclick = function () {
+            const title = this.getAttribute("data-title");
+            if (!title) return;
+            if (favorites.includes(title)) {
+              favorites = favorites.filter((t) => t !== title);
+            } else {
+              favorites.push(title);
+            }
+            saveFavorites();
+            updateAll();
+          };
+        });
       }
 
       function renderCard(item, idx) {
         const ytId = getYouTubeId(item.videoUrl);
+        const isFav = favorites.includes(item.title);
         return `
           <ion-card>
             <div class="card-content-flex">
@@ -857,7 +993,17 @@
               <div class="item-info">
                 <div class="item-info-row">
                   <div class="item-info-col">
-                    <div class="item-title">${item.title}</div>
+                    <div class="item-title">${item.title}
+                      <button class="favorite-btn${
+                        isFav ? " favorited" : ""
+                      }" data-title="${
+          item.title
+        }" title="收藏/取消收藏" aria-label="收藏/取消收藏">
+                        <ion-icon name="${
+                          isFav ? "star" : "star-outline"
+                        }"></ion-icon>
+                      </button>
+                    </div>
                   </div>
                   <div class="item-info-col">
                     <div class="item-subtitle">${item.language}｜${
@@ -902,7 +1048,21 @@
         select.value = currentCategory || "";
       }
 
+      function updateAdvancedOptions() {
+        // 語言選單
+        const advLangSel = document.getElementById("advLang");
+        const langs = Array.from(new Set(items.map((i) => i.language)));
+        advLangSel.innerHTML =
+          `<option value="">全部</option>` +
+          langs.map((l) => `<option value="${l}">${l}</option>`).join("");
+        advLangSel.value = advLang;
+        document.getElementById("advLevel").value = advLevel;
+        document.getElementById("advTag").value = advTag;
+        document.getElementById("advFav").checked = advFav;
+      }
+
       function updateAll() {
+        saveFilter();
         const filtered = filterItems();
         renderStatChart(filtered);
         renderCards(filtered);
@@ -919,7 +1079,11 @@
       }
 
       document.addEventListener("DOMContentLoaded", () => {
+        loadFavorites();
+        loadFilter();
         updateCategoryOptions();
+        updateAdvancedOptions();
+        document.querySelector("ion-searchbar").value = currentSearch;
         reloadWithAnimation();
 
         const searchbar = document.querySelector("ion-searchbar");
@@ -974,6 +1138,24 @@
             document.getElementById("listViewBtn").classList.remove("active");
             reloadWithAnimation();
           }
+        });
+
+        // 進階搜尋事件
+        document.getElementById("advLang").addEventListener("change", (e) => {
+          advLang = e.target.value;
+          reloadWithAnimation();
+        });
+        document.getElementById("advLevel").addEventListener("change", (e) => {
+          advLevel = e.target.value;
+          reloadWithAnimation();
+        });
+        document.getElementById("advTag").addEventListener("input", (e) => {
+          advTag = e.target.value;
+          reloadWithAnimation();
+        });
+        document.getElementById("advFav").addEventListener("change", (e) => {
+          advFav = e.target.checked;
+          reloadWithAnimation();
         });
 
         // 頁面切換動畫
