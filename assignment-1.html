@@ -18,22 +18,25 @@
       href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css"
     />
     <style>
+      html {
+        font-size: 16px;
+      }
       ion-content {
         --padding-top: 0;
       }
       .lang-header {
-        letter-spacing: 0.5px;
+        letter-spacing: 0.03em;
         margin-top: 2rem;
         margin-bottom: 1.5rem;
         margin-left: 0;
         margin-right: 0;
-        border-radius: 8px;
-        box-shadow: 0 1px 4px #0001;
+        border-radius: 0.5rem;
+        box-shadow: 0 0.0625rem 0.25rem #0001;
         padding: 0.5em 1em;
         font-size: 1.15em;
         font-weight: bold;
-        display: block; /* 讓標題獨占一行 */
-        min-width: 120px;
+        display: block;
+        min-width: 7.5rem;
         background: #3572a5;
         z-index: 1;
         position: relative;
@@ -45,23 +48,21 @@
         margin-bottom: 3rem;
         justify-content: flex-start;
       }
-
       .item-card {
         background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px black;
+        border-radius: 0.75rem;
+        box-shadow: 0 0.125rem 0.5rem #0002;
         padding: 0.7em 0.7em 0.7em 0.7em;
         flex: 1 1 0;
-        min-width: 50rem; /* 變寬，讓四欄橫向顯示 */
-        max-width: 50rem;
+        min-width: 25rem;
+        max-width: 40rem;
         display: flex;
         flex-direction: row;
         align-items: stretch;
         margin: 0;
-        height: 160px;
+        height: 10rem;
         box-sizing: border-box;
       }
-
       .item-content {
         display: flex;
         flex-direction: row;
@@ -70,56 +71,50 @@
         width: 100%;
         height: 100%;
       }
-
       .media-container {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         gap: 0.7rem;
-        min-width: 140px;
-        max-width: 180px;
-        width: 180px;
+        min-width: 8.75rem;
+        max-width: 11.25rem;
+        width: 11.25rem;
         height: 100%;
         justify-content: center;
       }
-
       .media-img {
-        width: 140px;
-        height: 100px;
+        width: 8.75rem;
+        height: 6.25rem;
         object-fit: cover;
-        border-radius: 8px;
+        border-radius: 0.5rem;
         border: 1px solid #eee;
         background: #f8f8f8;
       }
-
       .media-video,
       .media-iframe {
-        width: 140px;
-        height: 80px;
-        border-radius: 8px;
+        width: 8.75rem;
+        height: 5rem;
+        border-radius: 0.5rem;
         border: 1px solid #eee;
         background: #000;
       }
-
       .item-info {
         flex: 1 1 0;
         display: flex;
-        flex-direction: column; /* 垂直排列 */
+        flex-direction: column;
         justify-content: flex-start;
         align-items: stretch;
         min-width: 0;
         overflow: hidden;
         gap: 0.4rem;
       }
-
       .item-info-row {
         display: flex;
-        flex-direction: row; /* 水平排列 */
+        flex-direction: row;
         align-items: center;
         gap: 0.8rem;
         width: 100%;
       }
-
       .item-info-col {
         flex: 1 1 0;
         min-width: 0;
@@ -128,7 +123,6 @@
         flex-direction: column;
         justify-content: center;
       }
-
       .item-title,
       .item-subtitle,
       .item-details,
@@ -142,22 +136,18 @@
         font-size: 1em;
         width: 100%;
       }
-
       .item-title {
         font-weight: bold;
         font-size: 1.08em;
       }
-
       .item-subtitle {
         color: var(--ion-color-medium);
         font-size: 0.97em;
       }
-
       .item-details {
         color: #444;
         font-size: 0.97em;
       }
-
       .tag-container {
         display: flex;
         flex-wrap: wrap;
@@ -168,10 +158,14 @@
         overflow-wrap: break-word;
         word-break: break-all;
       }
-
+      .reset-chip {
+        margin-left: 0.7em;
+        cursor: pointer;
+        user-select: none;
+      }
       @media (max-width: 1200px) {
         .item-card {
-          min-width: 400px;
+          min-width: 18rem;
           max-width: 95vw;
         }
         .item-info {
@@ -209,8 +203,67 @@
         .media-img,
         .media-video,
         .media-iframe {
-          width: 120px;
-          height: 80px;
+          width: 7.5rem;
+          height: 5rem;
+        }
+      }
+      @media (max-width: 430px) {
+        .item-card {
+          min-width: 0;
+          max-width: 100vw;
+          padding: 0.4em 0.2em;
+          height: auto;
+        }
+        .item-content {
+          flex-direction: column;
+          gap: 0.5rem;
+          height: auto;
+        }
+        .media-container {
+          flex-direction: row;
+          width: 100%;
+          max-width: 100vw;
+          min-width: 0;
+          height: auto;
+          justify-content: flex-start;
+          gap: 0.5rem;
+        }
+        .media-img,
+        .media-video,
+        .media-iframe {
+          width: 5.6rem;
+          height: 3.75rem;
+        }
+        .item-info-row {
+          flex-direction: column;
+          gap: 0.2rem;
+        }
+        .item-info-col {
+          width: 100%;
+          min-width: 0;
+        }
+        .item-title,
+        .item-subtitle,
+        .item-details,
+        .tag-container {
+          font-size: 0.95em;
+        }
+      }
+      @media (max-width: 340px) {
+        .item-card {
+          padding: 0.2em 0.1em;
+        }
+        .media-img,
+        .media-video,
+        .media-iframe {
+          width: 4.4rem;
+          height: 2.8rem;
+        }
+        .item-title,
+        .item-subtitle,
+        .item-details,
+        .tag-container {
+          font-size: 0.9em;
         }
       }
     </style>
@@ -224,6 +277,7 @@
         <ion-searchbar placeholder="搜尋..."></ion-searchbar>
         <ion-item>
           <ion-select label="分類" interface="popover"></ion-select>
+          <ion-chip color="tertiary" class="reset-chip">重設</ion-chip>
         </ion-item>
       </ion-header>
       <ion-content>
@@ -585,7 +639,7 @@
                       </div>
                       <div class="item-info-col">
                         <div class="tag-container">
-                          <ion-chip color="primary" size="small">${
+                          <ion-chip color="primary" size="small" style="cursor:pointer">${
                             item.category
                           }</ion-chip>
                           ${item.tags
@@ -617,6 +671,8 @@
               (c) => `<ion-select-option value="${c}">${c}</ion-select-option>`
             )
             .join("");
+        // 保持選中狀態
+        select.value = currentCategory || "";
       }
 
       document.addEventListener("DOMContentLoaded", () => {
@@ -633,6 +689,30 @@
         categorySelect.addEventListener("ionChange", (event) => {
           currentCategory = event.target.value;
           updateList();
+        });
+
+        // 點擊類別標籤可快速過濾
+        document.body.addEventListener("click", function (e) {
+          const chip = e.target.closest("ion-chip");
+          if (
+            chip &&
+            chip.textContent &&
+            chip.getAttribute("color") === "primary"
+          ) {
+            currentCategory = chip.textContent.trim();
+            updateCategoryOptions();
+            updateList();
+          }
+          // 點擊重設
+          if (
+            chip &&
+            chip.textContent &&
+            chip.classList.contains("reset-chip")
+          ) {
+            currentCategory = "";
+            updateCategoryOptions();
+            updateList();
+          }
         });
       });
     </script>
