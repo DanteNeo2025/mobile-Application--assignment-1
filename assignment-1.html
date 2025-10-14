@@ -23,26 +23,37 @@
       }
       .lang-header {
         letter-spacing: 0.5px;
-        margin-top: 1.2em;
-        margin-bottom: 0.5em;
+        margin-top: 2rem;
+        margin-bottom: 1.5rem;
+        margin-left: 0;
+        margin-right: 0;
         border-radius: 8px;
         box-shadow: 0 1px 4px #0001;
+        padding: 0.5em 1em;
+        font-size: 1.15em;
+        font-weight: bold;
+        display: block; /* 讓標題獨占一行 */
+        min-width: 120px;
+        background: #3572a5;
+        z-index: 1;
+        position: relative;
       }
       .item-row {
         display: flex;
         flex-wrap: wrap;
-        gap: 1.5rem;
-        margin-bottom: 1.5rem;
+        gap: 2rem;
+        margin-bottom: 3rem;
         justify-content: flex-start;
       }
+
       .item-card {
         background: #fff;
         border-radius: 12px;
-        box-shadow: 0 2px 8px #0001;
+        box-shadow: 0 2px 8px black;
         padding: 0.7em 0.7em 0.7em 0.7em;
         flex: 1 1 0;
-        min-width: 320px;
-        max-width: 480px;
+        min-width: 50rem; /* 變寬，讓四欄橫向顯示 */
+        max-width: 50rem;
         display: flex;
         flex-direction: row;
         align-items: stretch;
@@ -50,6 +61,7 @@
         height: 160px;
         box-sizing: border-box;
       }
+
       .item-content {
         display: flex;
         flex-direction: row;
@@ -58,6 +70,7 @@
         width: 100%;
         height: 100%;
       }
+
       .media-container {
         display: flex;
         flex-direction: column;
@@ -69,6 +82,7 @@
         height: 100%;
         justify-content: center;
       }
+
       .media-img {
         width: 140px;
         height: 100px;
@@ -77,6 +91,7 @@
         border: 1px solid #eee;
         background: #f8f8f8;
       }
+
       .media-video,
       .media-iframe {
         width: 140px;
@@ -85,49 +100,82 @@
         border: 1px solid #eee;
         background: #000;
       }
+
       .item-info {
         flex: 1 1 0;
         display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+        flex-direction: column; /* 垂直排列 */
+        justify-content: flex-start;
+        align-items: stretch;
         min-width: 0;
         overflow: hidden;
+        gap: 0.4rem;
       }
+
+      .item-info-row {
+        display: flex;
+        flex-direction: row; /* 水平排列 */
+        align-items: center;
+        gap: 0.8rem;
+        width: 100%;
+      }
+
+      .item-info-col {
+        flex: 1 1 0;
+        min-width: 0;
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .item-title,
+      .item-subtitle,
+      .item-details,
+      .tag-container {
+        white-space: normal;
+        overflow-wrap: break-word;
+        word-break: break-all;
+        overflow: visible;
+        text-overflow: initial;
+        margin-bottom: 0.2em;
+        font-size: 1em;
+        width: 100%;
+      }
+
       .item-title {
         font-weight: bold;
-        font-size: 1.1em;
-        margin-bottom: 0.1rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        font-size: 1.08em;
       }
+
       .item-subtitle {
         color: var(--ion-color-medium);
-        font-size: 0.95em;
-        margin-bottom: 0.2em;
+        font-size: 0.97em;
       }
+
       .item-details {
-        font-size: 0.98em;
         color: #444;
-        margin-bottom: 0.2em;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        font-size: 0.97em;
       }
+
       .tag-container {
         display: flex;
         flex-wrap: wrap;
         gap: 0.4rem;
-        margin-top: 0.2rem;
+        align-items: center;
+        min-width: 0;
+        width: 100%;
+        overflow-wrap: break-word;
+        word-break: break-all;
       }
-      @media (max-width: 1100px) {
-        .item-row {
-          gap: 1rem;
-        }
+
+      @media (max-width: 1200px) {
         .item-card {
-          min-width: 220px;
-          max-width: 1fr;
-          height: auto;
+          min-width: 400px;
+          max-width: 95vw;
+        }
+        .item-info {
+          gap: 0.5rem;
         }
       }
       @media (max-width: 900px) {
@@ -145,6 +193,10 @@
           flex-direction: column;
           gap: 0.7rem;
           height: auto;
+        }
+        .item-info {
+          flex-direction: column;
+          gap: 0.4rem;
         }
         .media-container {
           flex-direction: row;
@@ -517,23 +569,33 @@
                     }
                   </div>
                   <div class="item-info">
-                    <div>
-                      <div class="item-title">${item.title}</div>
-                      <div class="item-subtitle">${item.language}｜${
+                    <div class="item-info-row">
+                      <div class="item-info-col">
+                        <div class="item-title">${item.title}</div>
+                      </div>
+                      <div class="item-info-col">
+                        <div class="item-subtitle">${item.language}｜${
                 item.level
               }</div>
-                      <div class="item-details">${item.details}</div>
+                      </div>
                     </div>
-                    <div class="tag-container">
-                      <ion-chip color="primary" size="small">${
-                        item.category
-                      }</ion-chip>
-                      ${item.tags
-                        .map(
-                          (tag) =>
-                            `<ion-chip size="small" color="secondary">${tag}</ion-chip>`
-                        )
-                        .join("")}
+                    <div class="item-info-row">
+                      <div class="item-info-col">
+                        <div class="item-details">${item.details}</div>
+                      </div>
+                      <div class="item-info-col">
+                        <div class="tag-container">
+                          <ion-chip color="primary" size="small">${
+                            item.category
+                          }</ion-chip>
+                          ${item.tags
+                            .map(
+                              (tag) =>
+                                `<ion-chip size="small" color="secondary">${tag}</ion-chip>`
+                            )
+                            .join("")}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
