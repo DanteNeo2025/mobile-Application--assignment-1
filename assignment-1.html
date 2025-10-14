@@ -24,6 +24,69 @@
       ion-content {
         --padding-top: 0;
       }
+      .toolbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-left: 1rem;
+      }
+      .view-toggle {
+        font-size: 1.3rem;
+        cursor: pointer;
+        color: var(--ion-color-primary);
+        background: none;
+        border: none;
+        outline: none;
+        padding: 0.2em 0.5em;
+        border-radius: 0.3em;
+        transition: background 0.2s;
+      }
+      .view-toggle.active {
+        background: var(--ion-color-primary-tint);
+        color: var(--ion-color-primary-contrast);
+      }
+      .stat-chart {
+        width: 100%;
+        max-width: 30rem;
+        margin: 1.5rem auto 0.5rem auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .stat-bar {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.7rem;
+        width: 100%;
+        height: 5rem;
+        margin-top: 0.5rem;
+      }
+      .stat-bar-col {
+        flex: 1 1 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+      }
+      .stat-bar-rect {
+        width: 1.5rem;
+        border-radius: 0.4rem 0.4rem 0 0;
+        background: var(--ion-color-primary);
+        transition: height 0.7s cubic-bezier(0.4, 2, 0.6, 1);
+        margin-bottom: 0.2rem;
+      }
+      .stat-bar-label {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 0.2rem;
+        text-align: center;
+        word-break: break-all;
+      }
+      .stat-bar-value {
+        font-size: 0.95em;
+        color: #222;
+        margin-bottom: 0.1rem;
+      }
       .lang-header {
         letter-spacing: 0.03em;
         margin-top: 2rem;
@@ -41,35 +104,115 @@
         z-index: 1;
         position: relative;
       }
-      .item-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        margin-bottom: 3rem;
-        justify-content: flex-start;
+      .reset-chip {
+        margin-left: 0.7em;
+        cursor: pointer;
+        user-select: none;
       }
-      .item-card {
-        background: #fff;
+      /* 卡片動畫 */
+      .fade-in {
+        animation: fadeInCard 0.7s cubic-bezier(0.4, 2, 0.6, 1);
+      }
+      @keyframes fadeInCard {
+        from {
+          opacity: 0;
+          transform: translateY(2rem) scale(0.97);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      /* 載入動畫 */
+      .loader {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 8rem;
+      }
+      .lds-ellipsis {
+        display: inline-block;
+        position: relative;
+        width: 4rem;
+        height: 2rem;
+      }
+      .lds-ellipsis div {
+        position: absolute;
+        top: 0.8rem;
+        width: 0.7rem;
+        height: 0.7rem;
+        border-radius: 50%;
+        background: var(--ion-color-primary);
+        animation-timing-function: cubic-bezier(0, 1, 1, 0);
+      }
+      .lds-ellipsis div:nth-child(1) {
+        left: 0;
+        animation: lds-ellipsis1 0.6s infinite;
+      }
+      .lds-ellipsis div:nth-child(2) {
+        left: 0;
+        animation: lds-ellipsis2 0.6s infinite;
+      }
+      .lds-ellipsis div:nth-child(3) {
+        left: 1.6rem;
+        animation: lds-ellipsis2 0.6s infinite;
+      }
+      .lds-ellipsis div:nth-child(4) {
+        left: 3.2rem;
+        animation: lds-ellipsis3 0.6s infinite;
+      }
+      @keyframes lds-ellipsis1 {
+        0% {
+          transform: scale(0);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      @keyframes lds-ellipsis2 {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(1.6rem);
+        }
+      }
+      @keyframes lds-ellipsis3 {
+        0% {
+          transform: scale(1);
+        }
+        100% {
+          transform: scale(0);
+        }
+      }
+      /* 列表/網格視圖 */
+      .card-list-view {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+      .card-grid-view {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr));
+        gap: 2rem;
+      }
+      ion-card {
+        margin: 0;
         border-radius: 0.75rem;
         box-shadow: 0 0.125rem 0.5rem #0002;
-        padding: 0.7em 0.7em 0.7em 0.7em;
-        flex: 1 1 0;
-        min-width: 25rem;
-        max-width: 40rem;
+        transition: box-shadow 0.2s;
+        overflow: hidden;
+        background: #fff;
         display: flex;
         flex-direction: row;
         align-items: stretch;
-        margin: 0;
-        height: 10rem;
-        box-sizing: border-box;
+        min-height: 10rem;
       }
-      .item-content {
+      .card-content-flex {
         display: flex;
         flex-direction: row;
-        align-items: stretch;
-        gap: 1.2rem;
         width: 100%;
-        height: 100%;
+        gap: 1.2rem;
       }
       .media-container {
         display: flex;
@@ -158,39 +301,56 @@
         overflow-wrap: break-word;
         word-break: break-all;
       }
-      .reset-chip {
-        margin-left: 0.7em;
-        cursor: pointer;
-        user-select: none;
+      /* 切換動畫 */
+      .page-fade-enter {
+        animation: pageFadeIn 0.5s cubic-bezier(0.4, 2, 0.6, 1);
+      }
+      .page-fade-leave {
+        animation: pageFadeOut 0.4s cubic-bezier(0.4, 2, 0.6, 1);
+      }
+      @keyframes pageFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(2rem);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes pageFadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+          transform: translateY(-2rem);
+        }
       }
       @media (max-width: 1200px) {
-        .item-card {
-          min-width: 18rem;
-          max-width: 95vw;
+        .media-img,
+        .media-video,
+        .media-iframe {
+          width: 7.5rem;
+          height: 5rem;
         }
-        .item-info {
-          gap: 0.5rem;
+        ion-card {
+          min-width: 18rem;
         }
       }
       @media (max-width: 900px) {
-        .item-row {
-          flex-direction: column;
+        .card-list-view,
+        .card-grid-view {
           gap: 1.2rem;
         }
-        .item-card {
+        ion-card {
+          flex-direction: column;
           min-width: 0;
           max-width: 100%;
-          flex-direction: column;
-          height: auto;
         }
-        .item-content {
+        .card-content-flex {
           flex-direction: column;
           gap: 0.7rem;
-          height: auto;
-        }
-        .item-info {
-          flex-direction: column;
-          gap: 0.4rem;
         }
         .media-container {
           flex-direction: row;
@@ -208,16 +368,14 @@
         }
       }
       @media (max-width: 430px) {
-        .item-card {
+        ion-card {
           min-width: 0;
           max-width: 100vw;
           padding: 0.4em 0.2em;
-          height: auto;
         }
-        .item-content {
+        .card-content-flex {
           flex-direction: column;
           gap: 0.5rem;
-          height: auto;
         }
         .media-container {
           flex-direction: row;
@@ -250,7 +408,7 @@
         }
       }
       @media (max-width: 340px) {
-        .item-card {
+        ion-card {
           padding: 0.2em 0.1em;
         }
         .media-img,
@@ -273,6 +431,24 @@
       <ion-header>
         <ion-toolbar>
           <ion-title> 程式教學 </ion-title>
+          <div class="toolbar-actions" slot="end">
+            <button
+              class="view-toggle active"
+              id="listViewBtn"
+              title="列表視圖"
+              aria-label="列表視圖"
+            >
+              <ion-icon name="list-outline"></ion-icon>
+            </button>
+            <button
+              class="view-toggle"
+              id="gridViewBtn"
+              title="網格視圖"
+              aria-label="網格視圖"
+            >
+              <ion-icon name="grid-outline"></ion-icon>
+            </button>
+          </div>
         </ion-toolbar>
         <ion-searchbar placeholder="搜尋..."></ion-searchbar>
         <ion-item>
@@ -281,7 +457,8 @@
         </ion-item>
       </ion-header>
       <ion-content>
-        <ion-list></ion-list>
+        <div id="statChart" class="stat-chart"></div>
+        <div id="pageContainer" class="page-fade-enter"></div>
       </ion-content>
     </ion-app>
     <script>
@@ -517,6 +694,55 @@
       // 狀態
       let currentCategory = "";
       let currentSearch = "";
+      let currentView = "list"; // "list" or "grid"
+      let isLoading = false;
+
+      // 統計圖表
+      function renderStatChart(filtered) {
+        const chart = document.getElementById("statChart");
+        // 統計每個分類數量
+        const stat = {};
+        filtered.forEach((item) => {
+          stat[item.category] = (stat[item.category] || 0) + 1;
+        });
+        const categories = Object.keys(stat);
+        if (categories.length === 0) {
+          chart.innerHTML = "";
+          return;
+        }
+        const max = Math.max(...Object.values(stat));
+        chart.innerHTML = `
+          <div style="font-weight:bold;font-size:1.1em;margin-bottom:0.2em;">分類統計</div>
+          <div class="stat-bar">
+            ${categories
+              .map(
+                (cat) => `
+              <div class="stat-bar-col">
+                <div class="stat-bar-rect" style="height:${(
+                  (stat[cat] / max) * 4 +
+                  0.5
+                ).toFixed(2)}rem;background:var(--ion-color-primary);"></div>
+                <div class="stat-bar-value">${stat[cat]}</div>
+                <div class="stat-bar-label">${cat}</div>
+              </div>
+            `
+              )
+              .join("")}
+          </div>
+        `;
+      }
+
+      // 載入動畫
+      function showLoader() {
+        const page = document.getElementById("pageContainer");
+        page.innerHTML = `
+          <div class="loader">
+            <div class="lds-ellipsis">
+              <div></div><div></div><div></div><div></div>
+            </div>
+          </div>
+        `;
+      }
 
       // 過濾資料
       function filterItems() {
@@ -561,7 +787,6 @@
       }
 
       function getLanguageColor(lang) {
-        // 可根據語言自訂顏色
         const map = {
           "Python 3": "#3572A5",
           JavaScript: "#E7E600",
@@ -578,87 +803,90 @@
         return map[lang] || "#666";
       }
 
-      function updateList() {
-        const list = document.querySelector("ion-list");
-        list.innerHTML = "";
-        const filtered = filterItems();
-        if (filtered.length === 0) {
-          list.innerHTML = `<ion-item><div style="width:100%;text-align:center;color:#888;">查無資料</div></ion-item>`;
-          return;
-        }
-        const groups = groupByLanguage(filtered);
-        Object.keys(groups).forEach((lang) => {
-          // 語言分組標題
-          const header = document.createElement("div");
-          header.className = "lang-header";
-          header.style.background = getLanguageColor(lang);
-          header.style.color = "#fff";
-          header.style.fontWeight = "bold";
-          header.style.fontSize = "1.15em";
-          header.style.padding = "0.5em 1em";
-          header.style.margin = "1.2em 0 0.5em 0";
-          header.style.borderRadius = "8px";
-          header.textContent = lang;
-          list.appendChild(header);
+      // 列表/網格視圖渲染
+      function renderCards(filtered) {
+        const page = document.getElementById("pageContainer");
+        page.classList.remove("page-fade-leave");
+        page.classList.add("page-fade-enter");
+        setTimeout(() => page.classList.remove("page-fade-enter"), 500);
 
-          // 分組內容以 row 方式顯示，每排最多 3 個，橫向設計
+        const groups = groupByLanguage(filtered);
+        let html = "";
+        Object.keys(groups).forEach((lang) => {
+          html += `<div class="lang-header" style="background:${getLanguageColor(
+            lang
+          )};color:#fff;">${lang}</div>`;
           const itemsArr = groups[lang];
-          for (let i = 0; i < itemsArr.length; i += 3) {
-            const row = document.createElement("div");
-            row.className = "item-row";
-            itemsArr.slice(i, i + 3).forEach((item) => {
-              const ionItem = document.createElement("div");
-              ionItem.className = "item-card";
-              const ytId = getYouTubeId(item.videoUrl);
-              ionItem.innerHTML = `
-                <div class="item-content">
-                  <div class="media-container">
-                    <img class="media-img" src="${item.imageUrl}" alt="${
-                item.title
-              }" loading="lazy" />
-                    ${
-                      ytId
-                        ? `<iframe class="media-iframe" src="https://www.youtube.com/embed/${ytId}" frameborder="0" allowfullscreen title="YouTube影片"></iframe>`
-                        : `<video class="media-video" src="${item.videoUrl}" controls></video>`
-                    }
+          if (currentView === "list") {
+            html += `<div class="card-list-view">`;
+            itemsArr.forEach((item, idx) => {
+              html += renderCard(item, idx);
+            });
+            html += `</div>`;
+          } else {
+            html += `<div class="card-grid-view">`;
+            itemsArr.forEach((item, idx) => {
+              html += renderCard(item, idx);
+            });
+            html += `</div>`;
+          }
+        });
+        page.innerHTML = html;
+        // 卡片動畫
+        document.querySelectorAll("ion-card").forEach((el, i) => {
+          el.classList.add("fade-in");
+          setTimeout(() => el.classList.remove("fade-in"), 800 + i * 30);
+        });
+      }
+
+      function renderCard(item, idx) {
+        const ytId = getYouTubeId(item.videoUrl);
+        return `
+          <ion-card>
+            <div class="card-content-flex">
+              <div class="media-container">
+                <img class="media-img" src="${item.imageUrl}" alt="${
+          item.title
+        }" loading="lazy" />
+                ${
+                  ytId
+                    ? `<iframe class="media-iframe" src="https://www.youtube.com/embed/${ytId}" frameborder="0" allowfullscreen title="YouTube影片"></iframe>`
+                    : `<video class="media-video" src="${item.videoUrl}" controls></video>`
+                }
+              </div>
+              <div class="item-info">
+                <div class="item-info-row">
+                  <div class="item-info-col">
+                    <div class="item-title">${item.title}</div>
                   </div>
-                  <div class="item-info">
-                    <div class="item-info-row">
-                      <div class="item-info-col">
-                        <div class="item-title">${item.title}</div>
-                      </div>
-                      <div class="item-info-col">
-                        <div class="item-subtitle">${item.language}｜${
-                item.level
-              }</div>
-                      </div>
-                    </div>
-                    <div class="item-info-row">
-                      <div class="item-info-col">
-                        <div class="item-details">${item.details}</div>
-                      </div>
-                      <div class="item-info-col">
-                        <div class="tag-container">
-                          <ion-chip color="primary" size="small" style="cursor:pointer">${
-                            item.category
-                          }</ion-chip>
-                          ${item.tags
-                            .map(
-                              (tag) =>
-                                `<ion-chip size="small" color="secondary">${tag}</ion-chip>`
-                            )
-                            .join("")}
-                        </div>
-                      </div>
+                  <div class="item-info-col">
+                    <div class="item-subtitle">${item.language}｜${
+          item.level
+        }</div>
+                  </div>
+                </div>
+                <div class="item-info-row">
+                  <div class="item-info-col">
+                    <div class="item-details">${item.details}</div>
+                  </div>
+                  <div class="item-info-col">
+                    <div class="tag-container">
+                      <ion-chip color="primary" size="small" style="cursor:pointer">${
+                        item.category
+                      }</ion-chip>
+                      ${item.tags
+                        .map(
+                          (tag) =>
+                            `<ion-chip size="small" color="secondary">${tag}</ion-chip>`
+                        )
+                        .join("")}
                     </div>
                   </div>
                 </div>
-              `;
-              row.appendChild(ionItem);
-            });
-            list.appendChild(row);
-          }
-        });
+              </div>
+            </div>
+          </ion-card>
+        `;
       }
 
       function updateCategoryOptions() {
@@ -671,24 +899,39 @@
               (c) => `<ion-select-option value="${c}">${c}</ion-select-option>`
             )
             .join("");
-        // 保持選中狀態
         select.value = currentCategory || "";
+      }
+
+      function updateAll() {
+        const filtered = filterItems();
+        renderStatChart(filtered);
+        renderCards(filtered);
+      }
+
+      // 載入動畫與切換動畫
+      function reloadWithAnimation() {
+        isLoading = true;
+        showLoader();
+        setTimeout(() => {
+          isLoading = false;
+          updateAll();
+        }, 500 + Math.random() * 400);
       }
 
       document.addEventListener("DOMContentLoaded", () => {
         updateCategoryOptions();
-        updateList();
+        reloadWithAnimation();
 
         const searchbar = document.querySelector("ion-searchbar");
         searchbar.addEventListener("ionInput", (event) => {
           currentSearch = event.target.value || "";
-          updateList();
+          reloadWithAnimation();
         });
 
         const categorySelect = document.querySelector("ion-select");
         categorySelect.addEventListener("ionChange", (event) => {
           currentCategory = event.target.value;
-          updateList();
+          reloadWithAnimation();
         });
 
         // 點擊類別標籤可快速過濾
@@ -701,7 +944,7 @@
           ) {
             currentCategory = chip.textContent.trim();
             updateCategoryOptions();
-            updateList();
+            reloadWithAnimation();
           }
           // 點擊重設
           if (
@@ -711,8 +954,35 @@
           ) {
             currentCategory = "";
             updateCategoryOptions();
-            updateList();
+            reloadWithAnimation();
           }
+        });
+
+        // 視圖切換
+        document.getElementById("listViewBtn").addEventListener("click", () => {
+          if (currentView !== "list") {
+            currentView = "list";
+            document.getElementById("listViewBtn").classList.add("active");
+            document.getElementById("gridViewBtn").classList.remove("active");
+            reloadWithAnimation();
+          }
+        });
+        document.getElementById("gridViewBtn").addEventListener("click", () => {
+          if (currentView !== "grid") {
+            currentView = "grid";
+            document.getElementById("gridViewBtn").classList.add("active");
+            document.getElementById("listViewBtn").classList.remove("active");
+            reloadWithAnimation();
+          }
+        });
+
+        // 頁面切換動畫
+        const page = document.getElementById("pageContainer");
+        page.addEventListener("transitionstart", () => {
+          page.classList.add("page-fade-leave");
+        });
+        page.addEventListener("transitionend", () => {
+          page.classList.remove("page-fade-leave");
         });
       });
     </script>
