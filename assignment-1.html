@@ -415,6 +415,33 @@
         return null;
       }
 
+      function groupByLanguage(items) {
+        const groups = {};
+        items.forEach(item => {
+          if (!groups[item.language]) groups[item.language] = [];
+          groups[item.language].push(item);
+        });
+        return groups;
+      }
+
+      function getLanguageColor(lang) {
+        // 可根據語言自訂顏色
+        const map = {
+          "Python 3": "#3572A5",
+          "JavaScript": "#F7DF1E",
+          "Kotlin": "#7F52FF",
+          "Swift": "#FA7343",
+          "SQL": "#e38c00",
+          "Linux": "#333",
+          "C++": "#00599C",
+          "Java": "#b07219",
+          "HTML/CSS": "#e34c26",
+          "Dart": "#0175C2",
+          "工具": "#888",
+        };
+        return map[lang] || "#666";
+      }
+
       function updateList() {
         const list = document.querySelector("ion-list");
         list.innerHTML = "";
@@ -423,39 +450,51 @@
           list.innerHTML = `<ion-item><div style="width:100%;text-align:center;color:#888;">查無資料</div></ion-item>`;
           return;
         }
-        filtered.forEach((item) => {
-          const ionItem = document.createElement("ion-item");
-          ionItem.style.alignItems = "flex-start";
-          const ytId = getYouTubeId(item.videoUrl);
-          ionItem.innerHTML = `
-            <div class="item-content">
-              <div class="item-title">${item.title}</div>
-              <div class="item-subtitle">${item.language}｜${item.level}</div>
-              <div class="item-details">${item.details}</div>
-              <div class="tag-container">
-                <ion-chip color="primary" size="small">${
-                  item.category
-                }</ion-chip>
-                ${item.tags
-                  .map(
-                    (tag) =>
-                      `<ion-chip size="small" color="secondary">${tag}</ion-chip>`
-                  )
-                  .join("")}
+        const groups = groupByLanguage(filtered);
+        Object.keys(groups).forEach(lang => {
+          // 語言分組標題
+          const header = document.createElement("div");
+          header.className = "lang-header";
+          header.style.background = getLanguageColor(lang);
+          header.style.color = "#fff";
+          header.style.fontWeight = "bold";
+          header.style.fontSize = "1.15em";
+          header.style.padding = "0.5em 1em";
+          header.style.margin = "1.2em 0 0.5em 0";
+          header.style.borderRadius = "8px";
+          header.textContent = lang;
+          list.appendChild(header);
+
+          groups[lang].forEach((item) => {
+            const ionItem = document.createElement("ion-item");
+            ionItem.style.alignItems = "flex-start";
+            const ytId = getYouTubeId(item.videoUrl);
+            ionItem.innerHTML = `
+              <div class="item-content">
+                <div class="item-title">${item.title}</div>
+                <div class="item-subtitle">${item.language}｜${item.level}</div>
+                <div class="item-details">${item.details}</div>
+                <div class="tag-container">
+                  <ion-chip color="primary" size="small">${item.category}</ion-chip>
+                  ${item.tags
+                    .map(
+                      (tag) =>
+                        `<ion-chip size="small" color="secondary">${tag}</ion-chip>`
+                    )
+                    .join("")}
+                </div>
+                <div class="media-container">
+                  <img class="media-img" src="${item.imageUrl}" alt="${item.title}" loading="lazy" />
+                  ${
+                    ytId
+                      ? `<iframe class="media-iframe" src="https://www.youtube.com/embed/${ytId}" frameborder="0" allowfullscreen title="YouTube影片"></iframe>`
+                      : `<video class="media-video" src="${item.videoUrl}" controls></video>`
+                  }
+                </div>
               </div>
-              <div class="media-container">
-                <img class="media-img" src="${item.imageUrl}" alt="${
-            item.title
-          }" loading="lazy" />
-                ${
-                  ytId
-                    ? `<iframe class="media-iframe" src="https://www.youtube.com/embed/${ytId}" frameborder="0" allowfullscreen title="YouTube影片"></iframe>`
-                    : `<video class="media-video" src="${item.videoUrl}" controls></video>`
-                }
-              </div>
-            </div>
-          `;
-          list.appendChild(ionItem);
+            `;
+            list.appendChild(ionItem);
+          });
         });
       }
 
