@@ -422,7 +422,7 @@
           max-width: 40rem;
         }
       }
-      
+
       /* 內容區塊文字置中，欄位內容置中 */
       ion-card,
       .card-content-flex,
@@ -449,7 +449,21 @@
     <ion-app>
       <ion-header>
         <ion-toolbar>
-          <ion-title> 程式教學 </ion-title>
+          <ion-title>
+            程式教學
+            <span
+              style="
+                display: block;
+                font-size: 2em;
+                font-weight: normal;
+                letter-spacing: 0.1em;
+                color: var(--ion-color-medium);
+                margin-top: 0.1em;
+              "
+            >
+              程式語言、前後端、AI、資料分析、行動開發等主題一站式學習
+            </span>
+          </ion-title>
           <div class="toolbar-actions" slot="end">
             <button
               class="view-toggle active"
