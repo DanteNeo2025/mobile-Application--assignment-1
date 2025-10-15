@@ -422,6 +422,27 @@
           max-width: 40rem;
         }
       }
+      
+      /* 內容區塊文字置中，欄位內容置中 */
+      ion-card,
+      .card-content-flex,
+      .media-container,
+      .item-info,
+      .item-info-row,
+      .item-info-col,
+      .item-title,
+      .item-subtitle,
+      .item-details,
+      .tag-container {
+        text-align: center !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+
+      /* 保證標籤、chip 也置中 */
+      .tag-container {
+        justify-content: center !important;
+      }
     </style>
   </head>
   <body>
