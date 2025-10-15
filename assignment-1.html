@@ -47,7 +47,7 @@
       }
       .stat-chart {
         width: 100%;
-        max-width: 30rem;
+        max-width: 40rem;
         margin: 1.5rem auto 0.5rem auto;
         display: flex;
         flex-direction: column;
@@ -125,7 +125,6 @@
       .favorite-btn:focus {
         outline: 2px solid #ff9800;
       }
-      /* 卡片動畫 */
       .fade-in {
         animation: fadeInCard 0.7s cubic-bezier(0.4, 2, 0.6, 1);
       }
@@ -139,7 +138,6 @@
           transform: none;
         }
       }
-      /* 載入動畫 */
       .loader {
         display: flex;
         justify-content: center;
@@ -201,7 +199,6 @@
           transform: scale(0);
         }
       }
-      /* 列表/網格視圖 */
       .card-list-view {
         display: flex;
         flex-direction: column;
@@ -317,7 +314,6 @@
         overflow-wrap: break-word;
         word-break: break-all;
       }
-      /* 進階搜尋 */
       .advanced-search {
         display: flex;
         flex-wrap: wrap;
@@ -336,7 +332,6 @@
         border-radius: 0.3em;
         border: 1px solid #ccc;
       }
-      /* 切換動畫 */
       .page-fade-enter {
         animation: pageFadeIn 0.5s cubic-bezier(0.4, 2, 0.6, 1);
       }
@@ -362,101 +357,69 @@
           transform: translateY(-2rem);
         }
       }
-      @media (max-width: 1200px) {
+      /* 響應式設計 */
+      @media (max-width: 430px) {
+        ion-card,
+        .card-content-flex,
+        .media-container {
+          flex-direction: column !important;
+          min-width: 0 !important;
+          max-width: 100vw !important;
+          width: 100% !important;
+          box-sizing: border-box;
+        }
         .media-img,
         .media-video,
         .media-iframe {
-          width: 7.5rem;
+          width: 100% !important;
+          max-width: 100vw !important;
+          height: auto !important;
+          min-width: 0 !important;
+          border-radius: 0.5rem;
+        }
+        .card-list-view,
+        .card-grid-view {
+          gap: 1rem !important;
+        }
+        body,
+        ion-app,
+        ion-content {
+          overflow-x: hidden !important;
+        }
+      }
+      @media (min-width: 431px) and (max-width: 900px) {
+        .card-grid-view {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1.5rem;
+        }
+        ion-card {
+          min-width: 16rem;
+          max-width: 100%;
+        }
+        .media-img,
+        .media-video,
+        .media-iframe {
+          width: 8rem;
           height: 5rem;
+        }
+      }
+      @media (min-width: 901px) {
+        .card-grid-view {
+          grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr));
+          gap: 2rem;
         }
         ion-card {
           min-width: 18rem;
-        }
-      }
-      @media (max-width: 900px) {
-        .card-list-view,
-        .card-grid-view {
-          gap: 1.2rem;
-        }
-        ion-card {
-          flex-direction: column;
-          min-width: 0;
-          max-width: 100%;
-        }
-        .card-content-flex {
-          flex-direction: column;
-          gap: 0.7rem;
-        }
-        .media-container {
-          flex-direction: row;
-          width: 100%;
-          max-width: 100vw;
-          min-width: 0;
-          height: auto;
-          justify-content: flex-start;
+          max-width: 40rem;
         }
         .media-img,
         .media-video,
         .media-iframe {
-          width: 7.5rem;
-          height: 5rem;
+          width: 9rem;
+          height: 6rem;
         }
-      }
-      @media (max-width: 430px) {
-        ion-card {
-          min-width: 0;
-          max-width: 100vw;
-          padding: 0.4em 0.2em;
-        }
-        .card-content-flex {
-          flex-direction: column;
-          gap: 0.5rem;
-        }
-        .media-container {
-          flex-direction: row;
-          width: 100%;
-          max-width: 100vw;
-          min-width: 0;
-          height: auto;
-          justify-content: flex-start;
-          gap: 0.5rem;
-        }
-        .media-img,
-        .media-video,
-        .media-iframe {
-          width: 5.6rem;
-          height: 3.75rem;
-        }
-        .item-info-row {
-          flex-direction: column;
-          gap: 0.2rem;
-        }
-        .item-info-col {
-          width: 100%;
-          min-width: 0;
-        }
-        .item-title,
-        .item-subtitle,
-        .item-details,
-        .tag-container {
-          font-size: 0.95em;
-        }
-      }
-      @media (max-width: 340px) {
-        ion-card {
-          padding: 0.2em 0.1em;
-        }
-        .media-img,
-        .media-video,
-        .media-iframe {
-          width: 4.4rem;
-          height: 2.8rem;
-        }
-        .item-title,
-        .item-subtitle,
-        .item-details,
-        .tag-container {
-          font-size: 0.9em;
+        .stat-chart {
+          max-width: 40rem;
         }
       }
     </style>
@@ -521,7 +484,7 @@
       </ion-content>
     </ion-app>
     <script>
-      // ...items 陣列同前...
+      // 請將你的 items 陣列資料放在這裡
       const items = [
         {
           title: "Python 基礎入門",
@@ -749,10 +712,10 @@
           videoUrl: "https://www.youtube.com/watch?v=p4pqSTANWRo",
         },
       ];
-      // 狀態
+
       let currentCategory = "";
       let currentSearch = "";
-      let currentView = "list"; // "list" or "grid"
+      let currentView = "list";
       let isLoading = false;
       let advLang = "";
       let advLevel = "";
@@ -760,11 +723,9 @@
       let advFav = false;
       let favorites = [];
 
-      // LocalStorage keys
       const STORAGE_KEY = "progAppFilter";
       const FAV_KEY = "progAppFavs";
 
-      // 初始化收藏
       function loadFavorites() {
         try {
           favorites = JSON.parse(localStorage.getItem(FAV_KEY)) || [];
@@ -775,8 +736,6 @@
       function saveFavorites() {
         localStorage.setItem(FAV_KEY, JSON.stringify(favorites));
       }
-
-      // 儲存/載入過濾設定
       function saveFilter() {
         localStorage.setItem(
           STORAGE_KEY,
@@ -804,8 +763,6 @@
           advFav = !!obj.advFav;
         } catch {}
       }
-
-      // 統計圖表
       function renderStatChart(filtered) {
         const chart = document.getElementById("statChart");
         const stat = {};
@@ -838,8 +795,6 @@
           </div>
         `;
       }
-
-      // 載入動畫
       function showLoader() {
         const page = document.getElementById("pageContainer");
         page.innerHTML = `
@@ -850,8 +805,6 @@
           </div>
         `;
       }
-
-      // 過濾資料
       function filterItems() {
         let result = items.filter((item) => {
           const categoryMatch =
@@ -872,7 +825,6 @@
           }
           return categoryMatch && searchMatch;
         });
-        // 進階搜尋
         if (advLang) result = result.filter((i) => i.language === advLang);
         if (advLevel) result = result.filter((i) => i.level === advLevel);
         if (advTag)
@@ -884,7 +836,6 @@
         if (advFav) result = result.filter((i) => favorites.includes(i.title));
         return result;
       }
-
       function getYouTubeId(url) {
         try {
           const u = new URL(url);
@@ -897,7 +848,6 @@
         } catch (e) {}
         return null;
       }
-
       function groupByLanguage(items) {
         const groups = {};
         items.forEach((item) => {
@@ -906,7 +856,6 @@
         });
         return groups;
       }
-
       function getLanguageColor(lang) {
         const map = {
           "Python 3": "#3572A5",
@@ -923,8 +872,6 @@
         };
         return map[lang] || "#666";
       }
-
-      // 列表/網格視圖渲染
       function renderCards(filtered) {
         const page = document.getElementById("pageContainer");
         page.classList.remove("page-fade-leave");
@@ -953,12 +900,10 @@
           }
         });
         page.innerHTML = html;
-        // 卡片動畫
         document.querySelectorAll("ion-card").forEach((el, i) => {
           el.classList.add("fade-in");
           setTimeout(() => el.classList.remove("fade-in"), 800 + i * 30);
         });
-        // 收藏按鈕事件
         document.querySelectorAll(".favorite-btn").forEach((btn) => {
           btn.onclick = function () {
             const title = this.getAttribute("data-title");
@@ -973,7 +918,6 @@
           };
         });
       }
-
       function renderCard(item, idx) {
         const ytId = getYouTubeId(item.videoUrl);
         const isFav = favorites.includes(item.title);
@@ -1034,7 +978,6 @@
           </ion-card>
         `;
       }
-
       function updateCategoryOptions() {
         const select = document.querySelector("ion-select");
         const categories = Array.from(new Set(items.map((i) => i.category)));
@@ -1047,9 +990,7 @@
             .join("");
         select.value = currentCategory || "";
       }
-
       function updateAdvancedOptions() {
-        // 語言選單
         const advLangSel = document.getElementById("advLang");
         const langs = Array.from(new Set(items.map((i) => i.language)));
         advLangSel.innerHTML =
@@ -1060,15 +1001,12 @@
         document.getElementById("advTag").value = advTag;
         document.getElementById("advFav").checked = advFav;
       }
-
       function updateAll() {
         saveFilter();
         const filtered = filterItems();
         renderStatChart(filtered);
         renderCards(filtered);
       }
-
-      // 載入動畫與切換動畫
       function reloadWithAnimation() {
         isLoading = true;
         showLoader();
@@ -1077,7 +1015,6 @@
           updateAll();
         }, 500 + Math.random() * 400);
       }
-
       document.addEventListener("DOMContentLoaded", () => {
         loadFavorites();
         loadFilter();
@@ -1098,7 +1035,6 @@
           reloadWithAnimation();
         });
 
-        // 點擊類別標籤可快速過濾
         document.body.addEventListener("click", function (e) {
           const chip = e.target.closest("ion-chip");
           if (
@@ -1110,7 +1046,6 @@
             updateCategoryOptions();
             reloadWithAnimation();
           }
-          // 點擊重設
           if (
             chip &&
             chip.textContent &&
@@ -1122,7 +1057,6 @@
           }
         });
 
-        // 視圖切換
         document.getElementById("listViewBtn").addEventListener("click", () => {
           if (currentView !== "list") {
             currentView = "list";
@@ -1140,7 +1074,6 @@
           }
         });
 
-        // 進階搜尋事件
         document.getElementById("advLang").addEventListener("change", (e) => {
           advLang = e.target.value;
           reloadWithAnimation();
@@ -1158,7 +1091,6 @@
           reloadWithAnimation();
         });
 
-        // 頁面切換動畫
         const page = document.getElementById("pageContainer");
         page.addEventListener("transitionstart", () => {
           page.classList.add("page-fade-leave");
